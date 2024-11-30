@@ -2,6 +2,7 @@ package com.lsmartins.desafio2.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,6 +34,9 @@ public class Atividade {
 	joinColumns = @JoinColumn(name = "atividade_id"),
 	inverseJoinColumns = @JoinColumn(name = "participante_id"))
 	private List<Participante> participantes = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "atividade")
+	private List<Bloco> blocos = new ArrayList<>();
 	
 	public Atividade() {
 	}
@@ -72,6 +78,33 @@ public class Atividade {
 
 	public void setPreco(Double preco) {
 		this.preco = preco;
+	}
+
+	public List<Bloco> getBlocos() {
+		return blocos;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+	
+	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Atividade other = (Atividade) obj;
+		return Objects.equals(id, other.id);
+	}
+
+	public List<Participante> getParticipantes() {
+		return participantes;
 	}
 	
 	
